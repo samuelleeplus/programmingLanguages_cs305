@@ -1,0 +1,72 @@
+%{
+int lineCount=1;
+char inString=0;
+%}
+%x QUOTES
+
+
+
+
+%% 
+">"	printf("%d tCLOSE\n", lineCount); 
+"<"	printf("%d tOPEN\n", lineCount); 
+"course"	printf("%d tCOURSE\n", lineCount);
+"code="	printf("%d tCODE\n", lineCount);
+#"\""	printf("( %s", yytext); 	BEGIN(QUOTES);
+#<QUOTES>"\""	BEGIN(INITIAL);	printf(")\n");
+
+"\'"	
+"\""	inString=1;
+" " 	
+""
+":" 
+
+
+"\n"	lineCount++; printf("");
+"</"	printf("%d tEND\n", lineCount);
+"/>"	printf("%d tSELF\n", lineCount);
+"end="	printf("%d tEND_A\n", lineCount);
+"meeting"	printf("%d tMEETING\n", lineCount);
+"item"	printf("%d tITEM\n", lineCount);
+"type="	printf("%d tTYPE\n", lineCount);
+"section="	printf("%d tSECTION\n", lineCount);
+"start="	printf("%d tSTART\n", lineCount);
+"day="	printf("%d tDAY\n", lineCount);
+"M"	printf("%d tMON\n", lineCount);
+"T"	printf("%d tTUE\n", lineCount);
+"R"	printf("%d tTHU\n", lineCount);
+"W"	printf("%d tWED\n", lineCount);
+"F"	printf("%d tFRI\n", lineCount);
+"constraint"	printf("%d tCONSTRAINT\n", lineCount);
+"class"	printf("%d tCLASS\n", lineCount);
+"name="	printf("%d tNAME\n", lineCount);
+"instructor="	printf("%d tINSTRUCTOR\n", lineCount);
+"crn="	printf("%d tCRN\n", lineCount);
+"capacity="	printf("%d tCAPACITY\n", lineCount);
+[0-9]* 	printf("%d tNUM\n", lineCount);
+[a-zA-Z_'-][a-zA-Z_0-9'-]*	{if (inString == 1) printf("%d tSTRING (%s)\n", lineCount, yytext);}  
+%%
+
+
+
+int main()
+{
+  yylex();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
